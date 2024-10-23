@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyMemory</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Whisper&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <header>
+        <h1>MyMemory</h1>
+        <p>A place for your life's memories and moments.</p>
+    </header>
+
+    <main>
+        <section class="chatbot">
+            <h2>Chat with MyMemory</h2>
+            <div class="chat-container">
+                <div id="chatbot-messages"></div>
+                <div id="chatbot-input">
+                    <input type="text" id="user-input" placeholder="Ask me something..">
+                    <button id="send-btn">Go</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="memory-input">
+            <h2>Feed Your Memories</h2>
+            <form id="memory-form">
+                <textarea id="memory-text" placeholder="Enter your memory here..."></textarea>
+                <button type="submit">Save Memory</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p> <span> <a href="https://spyrosigma.vercel.app/" target="_blank" style="color: #c7c7c7; text-decoration: none;">SpyroSigma </a> </span>MyMemory © 2024</p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="./chat.js"></script>
+</body>
+
+</html>
