@@ -4,9 +4,8 @@ const userInput = document.getElementById('user-input');
 const sendMessage = document.getElementById('send-message');
 const sendBtn = document.getElementById('send-btn');
 
-// Initialize Socket.IO with additional options
-const socket = io('https://wild-kristi-spyrosigma-81e0cee1.koyeb.app/', {
-// const socket = io('http://localhost:5000/', {
+// const socket = io('https://wild-kristi-spyrosigma-81e0cee1.koyeb.app/', {
+const socket = io('https://mymemory-6mtb.onrender.com/', {
     transports: ['websocket'],
     reconnection: true,
     reconnectionAttempts: 5,
