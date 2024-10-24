@@ -32,6 +32,10 @@ llm = ChatGroq(
     temperature=0.1,
 )
 
+@app.route('/')
+def welcome():
+    return 'Welcome to the Memory Saver Project Backend!'
+
 @app.route('/save_memory/', methods=['POST'])
 def save_memory():
     try:
