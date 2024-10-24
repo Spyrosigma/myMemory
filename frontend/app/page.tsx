@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Brain, Send, Sparkles, Calendar, Tag } from "lucide-react";
+import { Mic, Brain, Send, Sparkles, Calendar, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -51,7 +51,7 @@ export default function Home() {
   const handleChat = (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatInput.trim() || !userId) return;
-    
+
     const socket = getSocket();
     setMessages(prev => [...prev, { type: 'user', content: chatInput }]);
     socket.emit('user_message', { data: chatInput, user_id: userId });
@@ -61,7 +61,7 @@ export default function Home() {
   const handleMemory = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!memoryTopic.trim() || !memoryContent.trim()) return;
-    
+
     try {
       const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/';
       const response = await fetch(`${BACKEND_URL}save_memory/`, {
@@ -71,7 +71,7 @@ export default function Home() {
         },
         body: JSON.stringify({ Topic: memoryTopic, memory: memoryContent })
       });
-      
+
       const data = await response.json();
       console.log('Success:', data);
       alert("Memory saved!");
@@ -83,10 +83,25 @@ export default function Home() {
     }
   };
 
+  const startSpeechRecognition = () => {
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+    recognition.start();
+
+    recognition.onresult = (e: any) => {
+      const transcript = e.results[0][0].transcript;
+      setChatInput(transcript);
+      recognition.stop();
+    };
+};
+  
+  
   return (
-    <main className="h-screen bg-gradient-to-br from-background via-background/95 to-background/90 overflow-hidden">
+    <main className="h-screen bg-gradient-to-br from-background via-background/95 to-background/90 overflow-auto">
       <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-background to-background"></div>
-      
+
       <div className="h-full container mx-auto px-4 py-4">
         <div className="text-center mb-6 relative">
           <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-gradient-to-r from-gray-500/40 via-gray-600/20 to-gray-500/40 rounded-full"></div>
@@ -108,15 +123,15 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[calc(100vh-300px)] mb-4 rounded-lg bg-black/20 p-4">
+              <ScrollArea className="h-[calc(106vh-300px)] mb-4 rounded-lg bg-black/20 p-4">
                 <div className="space-y-4">
                   {messages.map((message, index) => (
                     <div
                       key={index}
                       className={cn(
                         "flex gap-2 p-3 rounded-lg",
-                        message.type === 'user' 
-                          ? "ml-auto bg-gray-800/50 backdrop-blur-sm max-w-[80%]" 
+                        message.type === 'user'
+                          ? "ml-auto bg-gray-800/50 backdrop-blur-sm max-w-[80%]"
                           : "mr-auto bg-gray-900/50 backdrop-blur-sm max-w-[80%]"
                       )}
                     >
@@ -133,6 +148,14 @@ export default function Home() {
                   placeholder="Ask me something..."
                   className="bg-black/30 backdrop-blur-sm border-gray-800"
                 />
+                <Button
+                  type="button"
+                  size="icon"
+                  className="bg-gray-800 hover:bg-gray-700 text-white"
+                  onClick={startSpeechRecognition}
+                >
+                  <Mic className="w-4 h-4" />
+                  </Button>
                 <Button type="submit" size="icon" className="bg-gray-800 hover:bg-gray-700 text-white">
                   <Send className="w-4 h-4" />
                 </Button>
@@ -152,7 +175,7 @@ export default function Home() {
                 <div className="flex gap-3">
                   <div className="flex-1">
                     <label className="text-sm text-gray-400 mb-1 flex items-center gap-2">
-                      <Tag className="w-4 h-4" /> Topic
+                      <Tag className="w-4 h-4" /> Topic <br />
                     </label>
                     <Input
                       value={memoryTopic}
@@ -168,9 +191,9 @@ export default function Home() {
                     value={memoryContent}
                     onChange={(e) => setMemoryContent(e.target.value)}
                     placeholder="Describe your memory in detail..."
-                    className="min-h-[calc(100vh-460px)] bg-black/30 backdrop-blur-sm border-gray-800 resize-none"
+                    className="min-h-[calc(105vh-460px)] bg-black/30 backdrop-blur-sm border-gray-800 resize-none"
                   />
-                </div>     
+                </div>
                 <div className="flex gap-2 flex-wrap">
                   <Badge variant="secondary" className="bg-gray-800/50 hover:bg-gray-700/50">
                     #personal
@@ -182,6 +205,7 @@ export default function Home() {
                     #life
                   </Badge>
                 </div>
+                <br />
                 <Button type="submit" className="w-full bg-gray-800/50 hover:bg-gray-700 text-white">
                   Save Memory
                 </Button>
