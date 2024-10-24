@@ -5,7 +5,7 @@ langchain
 langchain-core
 langchain-groq
 langchain-text-splitters
-gevent
+gevent-websocket
 gunicorn
 python-dotenv
 pinecone-client
