@@ -4,6 +4,8 @@ import os , uuid
 from dotenv import load_dotenv
 load_dotenv()
 
+JINA_API_KEY = os.environ.get('JINA_API_KEY')
+
 def memory_upload(memory_text, Topic):
     pc = Pinecone(api_key=os.environ.get('PINECONE_API_KEY'))
     index = pc.Index("mymemory")
@@ -11,7 +13,7 @@ def memory_upload(memory_text, Topic):
         url = 'https://api.jina.ai/v1/embeddings'
         headers = {
             'Content-Type': 'application/json',
-            'Authorization': f'Bearer {os.environ.get('JINA_API_KEY')}'
+            'Authorization': f'Bearer {JINA_API_KEY}'
         }
         data = {
             "model": "jina-embeddings-v3",

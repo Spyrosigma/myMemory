@@ -24,6 +24,8 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode='gevent')
 pc = Pinecone(api_key=os.environ.get('PINECONE_API_KEY'))
 index_name = 'mymemory'
 
+JINA_API_KEY = os.environ.get('JINA_API_KEY')
+
 llm = ChatGroq(
     groq_api_key=os.environ.get("GROQ_API_KEY"),
     model_name="llama3-8b-8192",
@@ -81,7 +83,7 @@ def handle_message(message):
         url = 'https://api.jina.ai/v1/embeddings'
         headers = {
         'Content-Type': 'application/json',
-        'Authorization': f'Bearer {os.environ.get('JINA_API_KEY')}'
+        'Authorization': f'Bearer {JINA_API_KEY}'
         }
         data = {
             "model": "jina-embeddings-v3",
