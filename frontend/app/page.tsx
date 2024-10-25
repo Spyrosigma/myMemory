@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Mic, Brain, Send, Sparkles, Calendar, Tag, LockOpenIcon } from "lucide-react";
+import { Mic, Brain, BrainCircuit , Sparkles, Calendar, Tag, LockOpenIcon, RocketIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -134,24 +134,26 @@ export default function Home() {
   // };
 
   return (
-    <main className="h-screen z-1 bg-gradient-to-br from-background via-background/95 to-background/90 y-overflow-auto x-overflow-hidden">
+    <main className="h-screen z-1 bg-gradient-to-br from-background via-background/95 to-background/90 overflow-auto">
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-background to-background"></div>
 
       <div className="h-full container mx-auto px-4 py-4">
         <div className="text-center mb-6 relative">
           <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-gradient-to-r from-gray-500/40 via-gray-600/20 to-gray-500/40 rounded-full"></div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent flex items-center justify-center gap-5">
-            <Sparkles className="w-8 h-8 text-gray-300" />
+            <Sparkles className="w-4 h-4 text-gray-300" />
+            <Sparkles className="w-7 h-7 text-gray-300" />
             MyMemory
-          <a href="https://spyrosigma.vercel.app" target="_blank" rel="noopener noreferrer" className="ml-auto">
-            <Image
-              src="./SpyroSigma.jpg"  // Use "/" for public folder paths
-              alt="Portfolio Link"
-              width={50}              // Set width and height for optimized loading
-              height={50}
-              className="object-cover flex rounded-half border-2"
-            />
-          </a>
+            <Sparkles className="w-3 h-3 text-gray-300" />
+            <a href="https://spyrosigma.vercel.app" target="_blank" rel="noopener noreferrer" className="ml-auto">
+              <Image
+                src="./SpyroSigma.jpg" 
+                alt="Portfolio Link"
+                width={50}              
+                height={50}
+                className="object-cover flex rounded-full border-2"
+              />
+            </a>
           </h1>
           {/* <p className="text-muted-foreground italic text-sm">
             A place for your life&apos;s memories and moments.
@@ -161,7 +163,7 @@ export default function Home() {
           <Card className="bg-black/40 backdrop-blur-xl border-gray-800 shadow-xl">
             <CardHeader className="py-3">
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Brain className="w-5 h-5 text-gray-300" />
+                <Brain className="w-7 h-7 text-gray-300" />
                 Chat with MyMemory
               </CardTitle>
             </CardHeader>
@@ -188,7 +190,7 @@ export default function Home() {
                 <Input
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="Ask me something..."
+                  placeholder="Tell me about GFG-party.."
                   className="bg-black/30 backdrop-blur-sm border-gray-800"
                 />
                 <Button
@@ -200,7 +202,7 @@ export default function Home() {
                   <Mic className="w-4 h-4" />
                 </Button>
                 <Button type="submit" size="icon" className="bg-gray-800 hover:bg-gray-700 text-white">
-                  <Send className="w-4 h-4" />
+                  <RocketIcon className="w-5 h-5" />
                 </Button>
               </form>
             </CardContent>
@@ -209,7 +211,8 @@ export default function Home() {
           <Card className="bg-black/40 backdrop-blur-xl border-gray-800 shadow-xl">
             <CardHeader className="py-3">
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Brain className="w-5 h-5 text-gray-300" />
+                {/* <Brain className="w-5 h-5 text-gray-300" /> */}
+                <BrainCircuit className="w-7 h-7 text-gray-300" />
                 Feed Your Memories
               </CardTitle>
             </CardHeader>
@@ -217,7 +220,7 @@ export default function Home() {
               <div>
                 {isLocked ? (
                   <div className="passkey-container backdrop-blur-xl border-gray-800 shadow-xl ">
-                    <input
+                    <Input
                       type="password"
                       placeholder="Enter passkey"
                       className="bg-black/30 backdrop-blur-sm border-gray-800 p-3 text-sm mb-1"
@@ -283,7 +286,7 @@ export default function Home() {
           </Card>
           );
         </div>
-    
+
       </div>
     </main>
   );
