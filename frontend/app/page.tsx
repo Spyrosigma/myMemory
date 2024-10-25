@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { initializeSocket, getSocket } from "@/lib/socket";
+import Image from 'next/image';
 
 interface Message {
   type: 'user' | 'bot';
@@ -108,7 +109,7 @@ export default function Home() {
 
   const handleUnlock = async () => {
     try {
-      
+
       // const BACKEND_URL = 'http://localhost:5000/';
       const response = await fetch(`${BACKEND_URL}validate-passkey/`, {
         method: 'POST',
@@ -133,21 +134,29 @@ export default function Home() {
   // };
 
   return (
-    <main className="h-screen bg-gradient-to-br from-background via-background/95 to-background/90 overflow-auto">
-      <div className="fixed inset-0 -z-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-background to-background"></div>
+    <main className="h-screen z-1 bg-gradient-to-br from-background via-background/95 to-background/90 y-overflow-auto x-overflow-hidden">
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-background to-background"></div>
 
       <div className="h-full container mx-auto px-4 py-4">
         <div className="text-center mb-6 relative">
           <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-gradient-to-r from-gray-500/40 via-gray-600/20 to-gray-500/40 rounded-full"></div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent flex items-center justify-center gap-3">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent flex items-center justify-center gap-5">
             <Sparkles className="w-8 h-8 text-gray-300" />
             MyMemory
+          <a href="https://spyrosigma.vercel.app" target="_blank" rel="noopener noreferrer" className="ml-auto">
+            <Image
+              src="./SpyroSigma.jpg"  // Use "/" for public folder paths
+              alt="Portfolio Link"
+              width={50}              // Set width and height for optimized loading
+              height={50}
+              className="object-cover flex rounded-half border-2"
+            />
+          </a>
           </h1>
-          <p className="text-muted-foreground italic text-sm">
+          {/* <p className="text-muted-foreground italic text-sm">
             A place for your life&apos;s memories and moments.
-          </p>
+          </p> */}
         </div>
-
         <div className="grid md:grid-cols-2 gap-4 h-[calc(100vh-160px)]">
           <Card className="bg-black/40 backdrop-blur-xl border-gray-800 shadow-xl">
             <CardHeader className="py-3">
@@ -272,10 +281,9 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-
-
           );
         </div>
+    
       </div>
     </main>
   );
