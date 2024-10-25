@@ -115,49 +115,53 @@ def handle_message(message):
         query_vector = response.json()['data'][0]['embedding']
             
         index = pc.Index(index_name)
-        results = index.query(namespace="October", 
-                            vector=query_vector, 
-                            top_k=1, 
-                            include_values=False, 
-                            include_metadata=True )
-        print(f'User {user_id}: {user_query}')
-        print('Results:', results)
-        context = [
-            results["matches"][0]["metadata"]["text"]
-        ]
-        context = " ".join(context)
-        print('Pinecone Semantic Search :-- \n',context)
 
+        try:
+            results = index.query(namespace="October", 
+                                vector=query_vector, 
+                                top_k=1, 
+                                include_values=False, 
+                                include_metadata=True )
+            print(f'User {user_id}: {user_query}')
+            print('Results:', results)
+            context = [
+                results["matches"][0]["metadata"]["text"]
+            ]
+            context = " ".join(context)
+            print('Pinecone Semantic Search :-- \n',context)
         
-        system_prompt = f"""
-        You're a close and trusted friend of Satyam, who understands the Satyam's life based only on the provided context.
-        When someone asks a question: {user_query}, rely solely on the context: {context} to give a personalized and empathetic response.
-        Guidelines:
-        - Keep the conversation friendly and natural.
-        - Use relevant details from the context to make your response feel meaningful.
-        - If someone disrespects Satyam, thrash them.
-        - If the context doesn't have enough information or something is unclear, ask the user for clarification or more details.
-        """
-
-        if user_id not in user_conversations:
-            memory = ConversationBufferMemory(return_messages=True)
-            prompt = ChatPromptTemplate.from_messages([
-                SystemMessage(content=system_prompt),
-                MessagesPlaceholder(variable_name="history"),
-                HumanMessagePromptTemplate.from_template("{input}")
-            ])
-            user_conversations[user_id] = ConversationChain(
-                llm=llm,
-                memory=memory,
-                prompt=prompt,
-                verbose=False
-            )
-
-        conversation = user_conversations[user_id]
-        response = conversation.predict(input=user_query)
+        except IndexError:
+            context = "NO MEMORY FOUND"
         
-        print('Groq: ', response)
-        emit('bot_response', {'data': response}, room=user_id)
+        finally:
+            system_prompt = f"""
+            You're a close and trusted friend of User, who understands the User's life. Answer the [Query]: {user_query} [/QUERY] based on your what user has told you before: [YOUR_MEMORY] {context} [/YOUR_MEMORY]. Give a personalized and empathetic response.
+            
+            Guidelines:
+            - If the user Query and YOUR_MEMORY are unrelated or 'NO MEMORY FOUND', say 'Sorry, I don't remember ( Eating Almonds.. )'.
+            - Keep the conversation friendly and natural.
+            - If user disrespects you, thrash them by saying, "I might wake up tomorrow and choose VIOLENCE 😈"
+            """
+
+            if user_id not in user_conversations:
+                memory = ConversationBufferMemory(return_messages=True)
+                prompt = ChatPromptTemplate.from_messages([
+                    SystemMessage(content=system_prompt),
+                    MessagesPlaceholder(variable_name="history"),
+                    HumanMessagePromptTemplate.from_template("{input}")
+                ])
+                user_conversations[user_id] = ConversationChain(
+                    llm=llm,
+                    memory=memory,
+                    prompt=prompt,
+                    verbose=False
+                )
+
+            conversation = user_conversations[user_id]
+            response = conversation.predict(input=user_query)
+            
+            print('Groq: ', response)
+            emit('bot_response', {'data': response}, room=user_id)
 
     except Exception as e:
         error_message = f"An error occurred: {str(e)}"

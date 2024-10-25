@@ -19,7 +19,7 @@ interface Message {
 
 export default function Home() {
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  // const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [chatInput, setChatInput] = useState("");
   const [memoryTopic, setMemoryTopic] = useState("");
   const [memoryContent, setMemoryContent] = useState("");
@@ -66,7 +66,7 @@ export default function Home() {
     if (!memoryTopic.trim() || !memoryContent.trim()) return;
 
     try {
-      // const BACKEND_URL = 'http://localhost:5000/';
+      const BACKEND_URL = 'http://localhost:5000/';
 
       const response = await fetch(`${BACKEND_URL}save_memory/`, {
         method: 'POST',
@@ -110,7 +110,7 @@ export default function Home() {
   const handleUnlock = async () => {
     try {
 
-      // const BACKEND_URL = 'http://localhost:5000/';
+      const BACKEND_URL = 'http://localhost:5000/';
       const response = await fetch(`${BACKEND_URL}validate-passkey/`, {
         method: 'POST',
         headers: {
@@ -220,7 +220,7 @@ export default function Home() {
               <div>
                 {isLocked ? (
                   <div className="passkey-container backdrop-blur-xl border-gray-800 shadow-xl ">
-                    <Input
+                    <input
                       type="password"
                       placeholder="Enter passkey"
                       className="bg-black/30 backdrop-blur-sm border-gray-800 p-3 text-sm mb-1"
