@@ -19,7 +19,7 @@ interface Message {
 
 export default function Home() {
 
-  // const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [chatInput, setChatInput] = useState("");
   const [memoryTopic, setMemoryTopic] = useState("");
   const [memoryContent, setMemoryContent] = useState("");
@@ -66,7 +66,7 @@ export default function Home() {
     if (!memoryTopic.trim() || !memoryContent.trim()) return;
 
     try {
-      const BACKEND_URL = 'http://localhost:5000/';
+      // const BACKEND_URL = 'http://localhost:5000/';
 
       const response = await fetch(`${BACKEND_URL}save_memory/`, {
         method: 'POST',
@@ -110,7 +110,7 @@ export default function Home() {
   const handleUnlock = async () => {
     try {
 
-      const BACKEND_URL = 'http://localhost:5000/';
+      // const BACKEND_URL = 'http://localhost:5000/';
       const response = await fetch(`${BACKEND_URL}validate-passkey/`, {
         method: 'POST',
         headers: {
