@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Mic, Brain, Send, Sparkles, Calendar, Tag } from "lucide-react";
+import { Mic, Brain, Send, Sparkles, Calendar, Tag, LockOpenIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,8 @@ interface Message {
 }
 
 export default function Home() {
+
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [chatInput, setChatInput] = useState("");
   const [memoryTopic, setMemoryTopic] = useState("");
   const [memoryContent, setMemoryContent] = useState("");
@@ -63,7 +65,8 @@ export default function Home() {
     if (!memoryTopic.trim() || !memoryContent.trim()) return;
 
     try {
-      const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/';
+      // const BACKEND_URL = 'http://localhost:5000/';
+
       const response = await fetch(`${BACKEND_URL}save_memory/`, {
         method: 'POST',
         headers: {
@@ -95,12 +98,43 @@ export default function Home() {
       setChatInput(transcript);
       recognition.stop();
     };
-};
-  
-  
+  };
+
+
+  // export default function MemoryFeed() {
+  const [isLocked, setIsLocked] = useState(true);
+  const [passkey, setPasskey] = useState('');
+  const [error, setError] = useState('');
+
+  const handleUnlock = async () => {
+    try {
+      
+      // const BACKEND_URL = 'http://localhost:5000/';
+      const response = await fetch(`${BACKEND_URL}validate-passkey/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ passkey: passkey }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setIsLocked(false);
+        setError('');
+      } else {
+        setError(result.message || 'Incorrect passkey.');
+      }
+    } catch (error) {
+      setError('Error validating passkey.');
+    }
+  };
+  // };
+
   return (
     <main className="h-screen bg-gradient-to-br from-background via-background/95 to-background/90 overflow-auto">
-      <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-background to-background"></div>
+      <div className="fixed inset-0 -z-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-background to-background"></div>
 
       <div className="h-full container mx-auto px-4 py-4">
         <div className="text-center mb-6 relative">
@@ -155,7 +189,7 @@ export default function Home() {
                   onClick={startSpeechRecognition}
                 >
                   <Mic className="w-4 h-4" />
-                  </Button>
+                </Button>
                 <Button type="submit" size="icon" className="bg-gray-800 hover:bg-gray-700 text-white">
                   <Send className="w-4 h-4" />
                 </Button>
@@ -171,47 +205,76 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleMemory} className="space-y-4">
-                <div className="flex gap-3">
-                  <div className="flex-1">
-                    <label className="text-sm text-gray-400 mb-1 flex items-center gap-2">
-                      <Tag className="w-4 h-4" /> Topic <br />
-                    </label>
-                    <Input
-                      value={memoryTopic}
-                      onChange={(e) => setMemoryTopic(e.target.value)}
-                      placeholder="E.g., First Kiss, Graduation"
-                      className="bg-black/30 backdrop-blur-sm border-gray-800"
+              <div>
+                {isLocked ? (
+                  <div className="passkey-container backdrop-blur-xl border-gray-800 shadow-xl ">
+                    <input
+                      type="password"
+                      placeholder="Enter passkey"
+                      className="bg-black/30 backdrop-blur-sm border-gray-800 p-3 text-sm mb-1"
+                      value={passkey}
+                      onChange={(e) => setPasskey(e.target.value)}
                     />
+                    <Button
+                      type="submit"
+                      size="icon"
+                      className="bg-gray-800 hover:bg-gray-700 text-white"
+                      onClick={handleUnlock}
+                    >
+                      <LockOpenIcon className="w-4 h-4" />
+                    </Button>
+                    <p className="text-gray-400 pd-5">
+                      {error}
+                    </p>
                   </div>
-                </div>
-                <div>
-                  <label className="text-sm text-gray-400 mb-1 block">Memory Details</label>
-                  <Textarea
-                    value={memoryContent}
-                    onChange={(e) => setMemoryContent(e.target.value)}
-                    placeholder="Describe your memory in detail..."
-                    className="min-h-[calc(105vh-460px)] bg-black/30 backdrop-blur-sm border-gray-800 resize-none"
-                  />
-                </div>
-                <div className="flex gap-2 flex-wrap">
-                  <Badge variant="secondary" className="bg-gray-800/50 hover:bg-gray-700/50">
-                    #personal
-                  </Badge>
-                  <Badge variant="secondary" className="bg-gray-800/50 hover:bg-gray-700/50">
-                    #milestone
-                  </Badge>
-                  <Badge variant="secondary" className="bg-gray-800/50 hover:bg-gray-700/50">
-                    #life
-                  </Badge>
-                </div>
-                <br />
-                <Button type="submit" className="w-full bg-gray-800/50 hover:bg-gray-700 text-white">
-                  Save Memory
-                </Button>
-              </form>
+
+                ) : (
+                  <form onSubmit={handleMemory} className="space-y-4">
+                    <div className="flex gap-3">
+                      <div className="flex-1">
+                        <label className="text-sm text-gray-400 mb-1 flex items-center gap-2">
+                          <Tag className="w-4 h-4" /> Topic <br />
+                        </label>
+                        <Input
+                          value={memoryTopic}
+                          onChange={(e) => setMemoryTopic(e.target.value)}
+                          placeholder="E.g., First Kiss, Graduation"
+                          className="bg-black/30 backdrop-blur-sm border-gray-800"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-400 mb-1 block">Memory Details</label>
+                      <Textarea
+                        value={memoryContent}
+                        onChange={(e) => setMemoryContent(e.target.value)}
+                        placeholder="Describe your memory in detail..."
+                        className="min-h-[calc(105vh-460px)] bg-black/30 backdrop-blur-sm border-gray-800 resize-none"
+                      />
+                    </div>
+                    <div className="flex gap-2 flex-wrap">
+                      <Badge variant="secondary" className="bg-gray-800/50 hover:bg-gray-700/50">
+                        #personal
+                      </Badge>
+                      <Badge variant="secondary" className="bg-gray-800/50 hover:bg-gray-700/50">
+                        #milestone
+                      </Badge>
+                      <Badge variant="secondary" className="bg-gray-800/50 hover:bg-gray-700/50">
+                        #life
+                      </Badge>
+                    </div>
+                    <br />
+                    <Button type="submit" className="w-full bg-gray-800/50 hover:bg-gray-700 text-white">
+                      Save Memory
+                    </Button>
+                  </form>
+                )}
+              </div>
             </CardContent>
           </Card>
+
+
+          );
         </div>
       </div>
     </main>

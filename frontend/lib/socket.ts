@@ -5,7 +5,9 @@ let socket: Socket | null = null;
 export const initializeSocket = () => {
   if (!socket) {
     // Replace with your deployed backend URL
-    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/';
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ;
+    // const BACKEND_URL = 'http://localhost:5000/';// || process.env.NEXT_PUBLIC_BACKEND_URL ;
+
     
     socket = io(BACKEND_URL, {
       transports: ['websocket'],

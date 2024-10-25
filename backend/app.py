@@ -36,6 +36,19 @@ llm = ChatGroq(
 def welcome():
     return 'Welcome to the Memory Saver Project Backend!'
 
+
+VALID_PASSKEY = os.environ.get('FEED_MEMORY_PASSKEY')
+
+@app.route('/validate-passkey/', methods=['POST'])
+def validate_passkey():
+    data = request.json
+    print('PasskeyEntered : ', data.get('passkey'))
+    if data.get('passkey') == VALID_PASSKEY:
+        print('Passkey validated')
+        return jsonify({'success': True}), 200
+    else:
+        return jsonify({'success': False, 'message': 'Invalid passkey'}), 401
+
 @app.route('/save_memory/', methods=['POST'])
 def save_memory():
     try:
@@ -152,6 +165,6 @@ def handle_message(message):
         emit('bot_response', {'data': error_message}, room=user_id)        
 
 if __name__ == '__main__':
-    socketio.run(app, debug=False)
+    socketio.run(app, debug=True)
 
     
