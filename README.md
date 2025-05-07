@@ -34,38 +34,6 @@ MyMemory is a full-stack application designed to help you store, manage, and rec
 * **Real-time Communication:** Socket.IO Client
 * **Deployment:** Vercel (implied by Vercel Analytics)
 
-## Directory Structure
-
-
-spyrosigma-mymemory/
-├── backend/
-│   ├── app.py               # Main Flask application, SocketIO, Langchain logic
-│   ├── memory_save.py       # Handles memory embedding and Pinecone upsert
-│   ├── requirements.txt     # Python dependencies
-│   └── .gitignore           # Git ignore for backend
-└── frontend/
-├── app/                 # Next.js App Router
-│   ├── globals.css      # Global styles
-│   ├── layout.tsx       # Root layout
-│   └── page.tsx         # Main page component
-├── components/
-│   └── ui/              # Shadcn UI components (Badge, Button, Card, etc.)
-├── hooks/
-│   └── use-toast.ts     # Toast hook
-├── lib/
-│   ├── socket.ts        # Socket.IO client setup
-│   └── utils.ts         # Utility functions
-├── public/              # Static assets (e.g., SpyroSigma.jpg)
-├── components.json      # Shadcn UI configuration
-├── next.config.js       # Next.js configuration
-├── package.json         # Node.js dependencies and scripts
-├── postcss.config.js    # PostCSS configuration
-├── tailwind.config.ts   # Tailwind CSS configuration
-├── tsconfig.json        # TypeScript configuration
-├── .env                 # Environment variables for frontend (example)
-├── .eslintrc.json       # ESLint configuration
-└── .gitignore           # Git ignore for frontend
-
 
 ## Setup and Installation
 
