@@ -192,17 +192,12 @@ Please ensure your code follows the existing style and includes tests where appr
 
 * **Satyam (SpyroSigma)**
 * Portfolio: [spyrosigma.tech](https://spyrosigma.tech)
-* GitHub: [github.com/spyrosigma](https://github.com/spyrosigma)
+
 
 ## License
 
-Consider adding a license to your project, such as the MIT License. To do this, create a `LICENSE` file in the root of your project and add the license text.
-
-Example for MIT License:
-
 MIT License
-
-Copyright (c) [2025] [SpyroSigma]
+Copyright (c) 2025 SpyroSigma
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
