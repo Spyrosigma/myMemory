@@ -4,6 +4,11 @@ MyMemory is a full-stack application designed to help you store, manage, and rec
 
 [![Portfolio](https://img.shields.io/badge/Author-SpyroSigma-blue?style=flat-square&logo=github)](https://spyrosigma.vercel.app)
 
+## System Design
+
+![unnamed](https://github.com/user-attachments/assets/75becbad-b831-4353-896b-a5399c4455f5)
+
+
 ## Features
 
 * **Save Memories:** Securely store your memories with a topic and detailed content.
